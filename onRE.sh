@@ -163,7 +163,7 @@ check_dependencies() {
     if [ ${#missing_tools[@]} -gt 0 ]; then
         echo -e "${RED}错误: 缺少必备工具: ${missing_tools[*]}${NC}"
         echo -e "${YELLOW}请先选择菜单选项1进行安装，或手动运行安装命令:${NC}"
-        echo -e "${BLUE}curl -fsSL https://raw.githubusercontent.com/zywe03/PortEasy/main/xwPF.sh | sudo bash -s install${NC}"
+        echo -e "${BLUE}curl -fsSL https://raw.githubusercontent.com/hillvision/realmone/main/onRE.sh | sudo bash -s install${NC}"
         exit 1
     fi
 }
@@ -3538,9 +3538,9 @@ diagnose_system() {
     echo ""
 }
 
-# 多线程并行搜索xwPF.sh脚本位置（带缓存）
+# 多线程并行搜索onRE.sh脚本位置（带缓存）
 find_script_locations_enhanced() {
-    local cache_file="/tmp/xwPF_script_locations_cache"
+    local cache_file="/tmp/onRE_script_locations_cache"
     local cache_timeout=604800  # 7天缓存，用户几乎不会改变脚本位置
 
     # 检查缓存是否有效
@@ -3563,13 +3563,13 @@ find_script_locations_enhanced() {
             (
                 # 使用timeout避免搜索卡死
                 if command -v timeout >/dev/null 2>&1; then
-                    timeout 30 find "$root" -name "xwPF.sh" -type f 2>/dev/null | while read -r file; do
+                    timeout 30 find "$root" -name "onRE.sh" -type f 2>/dev/null | while read -r file; do
                         if [ -f "$file" ] && [ -r "$file" ]; then
                             echo "$(dirname "$file")" >> "$temp_file"
                         fi
                     done
                 else
-                    find "$root" -name "xwPF.sh" -type f 2>/dev/null | while read -r file; do
+                    find "$root" -name "onRE.sh" -type f 2>/dev/null | while read -r file; do
                         if [ -f "$file" ] && [ -r "$file" ]; then
                             echo "$(dirname "$file")" >> "$temp_file"
                         fi
@@ -3652,7 +3652,7 @@ get_best_script_dir() {
 
 # 清理缓存函数
 clear_script_location_cache() {
-    rm -f "/tmp/xwPF_script_locations_cache"
+    rm -f "/tmp/onRE_script_locations_cache"
     echo -e "${GREEN}✓ 脚本位置缓存已清理${NC}"
 }
 
@@ -4751,7 +4751,7 @@ generate_systemd_service() {
     cat > "$SYSTEMD_PATH" <<EOF
 [Unit]
 Description=Realm TCP Relay Service
-Documentation=https://github.com/zywe03/realm-xwPF
+Documentation=https://github.com/hillvision/realmone
 After=network.target nss-lookup.target
 Wants=network.target
 
@@ -4817,7 +4817,7 @@ EOF
 self_install() {
     echo -e "${YELLOW}正在安装脚本到系统...${NC}"
 
-    local script_name="xwPF.sh"
+    local script_name="onRE.sh"
     local install_dir="/usr/local/bin"
     local shortcut_name="pf"
 
@@ -4835,7 +4835,7 @@ self_install() {
     else
         # 如果是通过管道运行的，需要重新下载
         echo -e "${BLUE}正在从GitHub下载脚本...${NC}"
-        local base_script_url="https://raw.githubusercontent.com/zywe03/PortEasy/main/xwPF.sh"
+        local base_script_url="https://raw.githubusercontent.com/hillvision/realmone/main/onRE.sh"
 
         # 使用多源下载脚本
         local sources=(
@@ -4880,9 +4880,9 @@ self_install() {
 # Realm 端口转发快捷启动脚本
 # 优先检测当前目录的脚本，如果不存在则使用系统安装的脚本
 
-# 检查当前目录是否有xwPF.sh
-if [ -f "\$(pwd)/xwPF.sh" ]; then
-    exec bash "\$(pwd)/xwPF.sh" "\$@"
+# 检查当前目录是否有onRE.sh
+if [ -f "\$(pwd)/onRE.sh" ]; then
+    exec bash "\$(pwd)/onRE.sh" "\$@"
 else
     exec bash "${install_dir}/${script_name}" "\$@"
 fi
@@ -4904,7 +4904,7 @@ EOF
 
 # 智能安装和配置流程
 smart_install() {
-    echo -e "${GREEN}=== xwPF Realm 一键脚本智能安装 v1.0.0 ===${NC}"
+    echo -e "${GREEN}=== onRE Realm 一键脚本智能安装 v1.0.0 ===${NC}"
     echo ""
 
     # 步骤1: 检测系统
@@ -4931,7 +4931,7 @@ smart_install() {
     else
         echo -e "${RED}错误: realm安装失败${NC}"
         echo -e "${YELLOW}可能原因: 网络连接问题或所有下载源均不可用${NC}"
-        echo -e "${BLUE}稍后重试或参考https://github.com/zywe03/realm-xwPF#离线安装${NC}"
+        echo -e "${BLUE}稍后重试或参考https://github.com/hillvision/realmone#离线安装${NC}"
         echo -e "${YELLOW}输入快捷命令 ${GREEN}pf${YELLOW} 可进入脚本交互界面${NC}"
     fi
 }
@@ -5453,8 +5453,8 @@ uninstall_realm() {
     echo -e "${BLUE}全面清理临时文件和缓存...${NC}"
 
     # 清理新的脚本位置缓存
-    rm -f "/tmp/xwPF_script_locations_cache" && echo -e "${GREEN}✓${NC} 已清理脚本位置缓存"
-    rm -f "/tmp/xwPF_script_path_cache" && echo -e "${GREEN}✓${NC} 已清理脚本路径缓存"
+    rm -f "/tmp/onRE_script_locations_cache" && echo -e "${GREEN}✓${NC} 已清理脚本位置缓存"
+    rm -f "/tmp/onRE_script_path_cache" && echo -e "${GREEN}✓${NC} 已清理脚本路径缓存"
     rm -f "/tmp/realm_path_cache" && echo -e "${GREEN}✓${NC} 已清理故障转移路径缓存"
     local tmp_dirs=("/tmp" "/var/tmp" "/root" "/home" "/usr/local/tmp")
     for tmp_dir in "${tmp_dirs[@]}"; do
@@ -5495,23 +5495,23 @@ uninstall_realm() {
     echo ""
 
     # 第二阶段：脚本文件
-    echo -e "${YELLOW}=== 第二阶段：xwPF 脚本文件 ===${NC}"
-    echo -e "${BLUE}此操作将查找并删除所有 xwPF 相关文件${NC}"
+    echo -e "${YELLOW}=== 第二阶段：onRE 脚本文件 ===${NC}"
+    echo -e "${BLUE}此操作将查找并删除所有 onRE 相关文件${NC}"
     echo ""
 
     read -p "确认删除脚本文件？(y/n): " confirm_script
     if [[ "$confirm_script" =~ ^[Yy]$ ]]; then
         echo ""
-        echo -e "${YELLOW}正在查找并删除 xwPF 相关文件...${NC}"
+        echo -e "${YELLOW}正在查找并删除 onRE 相关文件...${NC}"
 
-        # 全局搜索 xwPF.sh 文件（多线程精确搜索）
-        echo -e "${BLUE}全局搜索 xwPF.sh 文件...${NC}"
+        # 全局搜索 onRE.sh 文件（多线程精确搜索）
+        echo -e "${BLUE}全局搜索 onRE.sh 文件...${NC}"
 
-        # 全局搜索所有挂载点，xwPF.sh文件名唯一不会误删
+        # 全局搜索所有挂载点，onRE.sh文件名唯一不会误删
         local search_roots=("/" "/usr" "/opt" "/home" "/root" "/var" "/tmp" "/etc")
         for root in "${search_roots[@]}"; do
             if [ -d "$root" ]; then
-                find "$root" -name "xwPF.sh" -type f 2>/dev/null | while read -r file; do
+                find "$root" -name "onRE.sh" -type f 2>/dev/null | while read -r file; do
                     if [ -f "$file" ]; then
                         rm -f "$file" && echo -e "${GREEN}✓${NC} 已删除: $file"
                     fi
@@ -5520,15 +5520,15 @@ uninstall_realm() {
         done
         wait  # 等待所有并行搜索完成
 
-        # 搜索 pf 命令（严格验证是否为 xwPF 相关）
+        # 搜索 pf 命令（严格验证是否为 onRE 相关）
         echo -e "${BLUE}搜索 pf 命令...${NC}"
         # 只在可执行文件目录搜索，避免误删其他pf命令
         local exec_dirs=("/usr/local/bin" "/usr/bin" "/bin" "/opt/bin" "/root/bin")
         for dir in "${exec_dirs[@]}"; do
             if [ -d "$dir" ]; then
                 find "$dir" -name "pf" -type f 2>/dev/null | while read -r file; do
-                    # 严格验证：必须包含xwPF特征字符串
-                    if [ -f "$file" ] && grep -q "xwPF.*端口转发管理脚本\|xwPF.sh" "$file" 2>/dev/null; then
+                    # 严格验证：必须包含onRE特征字符串
+                    if [ -f "$file" ] && grep -q "onRE.*端口转发管理脚本\|onRE.sh" "$file" 2>/dev/null; then
                         rm -f "$file" && echo -e "${GREEN}✓${NC} 已删除: $file"
                     fi
                 done &
@@ -5536,14 +5536,14 @@ uninstall_realm() {
         done
         wait  # 等待所有并行搜索完成
 
-        # 查找并删除指向 xwPF 的符号链接
+        # 查找并删除指向 onRE 的符号链接
         echo -e "${BLUE}搜索相关符号链接...${NC}"
         # 只在可执行文件目录搜索符号链接
         for dir in "${exec_dirs[@]}"; do
             if [ -d "$dir" ]; then
                 find "$dir" -name "pf" -type l 2>/dev/null | while read -r link; do
                     target=$(readlink "$link" 2>/dev/null)
-                    if [[ "$target" == *"xwPF"* ]]; then
+                    if [[ "$target" == *"onRE"* ]]; then
                         rm -f "$link" && echo -e "${GREEN}✓${NC} 已删除符号链接: $link"
                     fi
                 done &
@@ -5553,7 +5553,7 @@ uninstall_realm() {
 
         echo ""
         echo -e "${GREEN}🗑️  完全卸载完成！${NC}"
-        echo -e "${BLUE}所有 Realm 和 xwPF 相关文件已从系统中完全移除${NC}"
+        echo -e "${BLUE}所有 Realm 和 onRE 相关文件已从系统中完全移除${NC}"
     else
         echo -e "${BLUE}脚本文件保留，可继续使用 pf 命令管理其他 Realm 服务${NC}"
     fi
@@ -6237,9 +6237,8 @@ cron_management_menu() {
 show_menu() {
     while true; do
         clear
-        echo -e "${GREEN}=== xwPF Realm全功能一键脚本 v1.0.0 ===${NC}"
-        echo -e "${GREEN}作者主页:https://zywe.de${NC}"
-        echo -e "${GREEN}项目开源:https://github.com/zywe03/realm-xwPF${NC}"
+        echo -e "${GREEN}=== Realmone全功能一键脚本 v1.0.0 ===${NC}"
+        echo -e "${GREEN}项目开源:https://github.com/hillvision/realmone${NC}"
         echo -e "${GREEN}原生realm的全部功能+故障转移 | 快捷命令: pf${NC}"
 
         # 显示当前状态
@@ -6596,11 +6595,11 @@ find_main_script() {
     # 第二阶段：常见位置直接检查
     local common_paths=(
         "/usr/local/bin/pf"
-        "/usr/local/bin/xwPF.sh"
-        "/root/xwPF.sh"
-        "/opt/xwPF.sh"
-        "/usr/bin/xwPF.sh"
-        "/usr/sbin/xwPF.sh"
+        "/usr/local/bin/onRE.sh"
+        "/root/onRE.sh"
+        "/opt/onRE.sh"
+        "/usr/bin/onRE.sh"
+        "/usr/sbin/onRE.sh"
     )
 
     for path in "${common_paths[@]}"; do
@@ -6615,7 +6614,7 @@ find_main_script() {
     local search_dirs=("/etc" "/var" "/opt" "/usr" "/home" "/root")
     for dir in "${search_dirs[@]}"; do
         if [ -d "$dir" ]; then
-            local found_path=$(timeout 30 find "$dir" -maxdepth 4 -name "xwPF.sh" -type f 2>/dev/null | head -1)
+            local found_path=$(timeout 30 find "$dir" -maxdepth 4 -name "onRE.sh" -type f 2>/dev/null | head -1)
             if [ -n "$found_path" ] && [ -f "$found_path" ]; then
                 echo "$found_path" > "$cache_file"
                 echo "$found_path"
@@ -6625,7 +6624,7 @@ find_main_script() {
     done
 
     # 第四阶段：全系统搜索
-    local found_path=$(timeout 60 find / -name "xwPF.sh" -type f 2>/dev/null | head -1)
+    local found_path=$(timeout 60 find / -name "onRE.sh" -type f 2>/dev/null | head -1)
     if [ -n "$found_path" ] && [ -f "$found_path" ]; then
         echo "$found_path" > "$cache_file"
         echo "$found_path"
@@ -6918,11 +6917,11 @@ if [ "$config_changed" = true ]; then
     if [ -z "$script_path" ]; then
         common_paths=(
             "/usr/local/bin/pf"
-            "/usr/local/bin/xwPF.sh"
-            "/root/xwPF.sh"
-            "/opt/xwPF.sh"
-            "/usr/bin/xwPF.sh"
-            "/usr/sbin/xwPF.sh"
+            "/usr/local/bin/onRE.sh"
+            "/root/onRE.sh"
+            "/opt/onRE.sh"
+            "/usr/bin/onRE.sh"
+            "/usr/sbin/onRE.sh"
         )
 
         for path in "${common_paths[@]}"; do
@@ -6939,7 +6938,7 @@ if [ "$config_changed" = true ]; then
         search_dirs=("/etc" "/var" "/opt" "/usr" "/home" "/root")
         for dir in "${search_dirs[@]}"; do
             if [ -d "$dir" ]; then
-                found_path=$(timeout 30 find "$dir" -maxdepth 4 -name "xwPF.sh" -type f 2>/dev/null | head -1)
+                found_path=$(timeout 30 find "$dir" -maxdepth 4 -name "onRE.sh" -type f 2>/dev/null | head -1)
                 if [ -n "$found_path" ] && [ -f "$found_path" ]; then
                     echo "$found_path" > "$cache_file"
                     script_path="$found_path"
@@ -6951,7 +6950,7 @@ if [ "$config_changed" = true ]; then
 
     # 第四阶段：全系统搜索
     if [ -z "$script_path" ]; then
-        found_path=$(timeout 60 find / -name "xwPF.sh" -type f 2>/dev/null | head -1)
+        found_path=$(timeout 60 find / -name "onRE.sh" -type f 2>/dev/null | head -1)
         if [ -n "$found_path" ] && [ -f "$found_path" ]; then
             echo "$found_path" > "$cache_file"
             script_path="$found_path"
