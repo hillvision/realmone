@@ -30,23 +30,23 @@
 
 **方法一：使用 curl**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/hillvision/realmone/main/xwPF.sh | sudo bash -s install
+curl -fsSL https://raw.githubusercontent.com/hillvision/realmone/main/onRE.sh | sudo bash -s install
 ```
 
 **方法二：使用 wget**
 ```bash
-wget -qO- https://raw.githubusercontent.com/hillvision/realmone/main/xwPF.sh | sudo bash -s install
+wget -qO- https://raw.githubusercontent.com/hillvision/realmone/main/onRE.sh | sudo bash -s install
 ```
 
 ### 网络受限使用加速源,一键安装
 
 方法一：使用 curl 加速下载
 ```bash
-curl -fsSL https://proxy.vvvv.ee/https://raw.githubusercontent.com/hillvision/realmone/main/xwPF.sh | sudo bash -s install
+curl -fsSL https://proxy.vvvv.ee/https://raw.githubusercontent.com/hillvision/realmone/main/onRE.sh | sudo bash -s install
 ```
 方法二：使用 wget 加速下载
 ```bash
-wget -qO- https://proxy.vvvv.ee/https://raw.githubusercontent.com/hillvision/realmone/main/xwPF.sh | sudo bash -s install
+wget -qO- https://proxy.vvvv.ee/https://raw.githubusercontent.com/hillvision/realmone/main/onRE.sh | sudo bash -s install
 ```
 
 ## 🧭 无法联网的离线安装
@@ -59,7 +59,7 @@ wget -qO- https://proxy.vvvv.ee/https://raw.githubusercontent.com/hillvision/rea
 **下载必要文件**
 
 在有网络的设备上下载以下文件：
-- **脚本文件下载**：[xwPF.sh](https://github.com/hillvision/realmone/raw/main/xwPF.sh) (右键点击 → 另存为)
+- **脚本文件下载**：[onRE.sh](https://github.com/hillvision/realmone/raw/main/onRE.sh) (右键点击 → 另存为)
 - **Realm 程序下载**（根据系统架构选择）：
 
 | 架构 | 适用系统 | 下载链接 | 检测命令 |
@@ -219,7 +219,7 @@ wget -qO- https://proxy.vvvv.ee/https://raw.githubusercontent.com/hillvision/rea
 📦 系统文件
 ├── /usr/local/bin/
 │   ├── realm                    # Realm 主程序
-│   ├── xwPF.sh                  # 管理脚本主体
+│   ├── onRE.sh                  # 管理脚本主体
 │   └── pf                       # 快捷启动命令
 │
 ├── /etc/realm/                  # 配置目录
