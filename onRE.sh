@@ -226,7 +226,7 @@ EOF
 read_manager_conf() {
     if [ ! -f "$MANAGER_CONF" ]; then
         echo -e "${RED}错误: 状态文件不存在，请先运行安装${NC}"
-        echo -e "${YELLOW}运行命令: ${GREEN}pf install${NC}"
+        echo -e "${YELLOW}运行命令: ${GREEN}re install${NC}"
         exit 1
     fi
 
@@ -4819,7 +4819,7 @@ self_install() {
 
     local script_name="onRE.sh"
     local install_dir="/usr/local/bin"
-    local shortcut_name="pf"
+    local shortcut_name="re"
 
     # 创建安装目录
     mkdir -p "$install_dir"
@@ -4927,12 +4927,12 @@ smart_install() {
     # 步骤4: 下载最新的 realm 主程序
     if install_realm; then
         echo -e "${GREEN}=== 安装完成！ ===${NC}"
-        echo -e "${YELLOW}输入快捷命令 ${GREEN}pf${YELLOW} 进入脚本交互界面${NC}"
+        echo -e "${YELLOW}输入快捷命令 ${GREEN}re${YELLOW} 进入脚本交互界面${NC}"
     else
         echo -e "${RED}错误: realm安装失败${NC}"
         echo -e "${YELLOW}可能原因: 网络连接问题或所有下载源均不可用${NC}"
         echo -e "${BLUE}稍后重试或参考https://github.com/hillvision/realmone#离线安装${NC}"
-        echo -e "${YELLOW}输入快捷命令 ${GREEN}pf${YELLOW} 可进入脚本交互界面${NC}"
+        echo -e "${YELLOW}输入快捷命令 ${GREEN}re${YELLOW} 可进入脚本交互界面${NC}"
     fi
 }
 
@@ -5520,13 +5520,13 @@ uninstall_realm() {
         done
         wait  # 等待所有并行搜索完成
 
-        # 搜索 pf 命令（严格验证是否为 onRE 相关）
-        echo -e "${BLUE}搜索 pf 命令...${NC}"
-        # 只在可执行文件目录搜索，避免误删其他pf命令
+        # 搜索 re 命令（严格验证是否为 onRE 相关）
+        echo -e "${BLUE}搜索 re 命令...${NC}"
+        # 只在可执行文件目录搜索，避免误删其他re命令
         local exec_dirs=("/usr/local/bin" "/usr/bin" "/bin" "/opt/bin" "/root/bin")
         for dir in "${exec_dirs[@]}"; do
             if [ -d "$dir" ]; then
-                find "$dir" -name "pf" -type f 2>/dev/null | while read -r file; do
+                find "$dir" -name "re" -type f 2>/dev/null | while read -r file; do
                     # 严格验证：必须包含onRE特征字符串
                     if [ -f "$file" ] && grep -q "onRE.*端口转发管理脚本\|onRE.sh" "$file" 2>/dev/null; then
                         rm -f "$file" && echo -e "${GREEN}✓${NC} 已删除: $file"
@@ -5541,7 +5541,7 @@ uninstall_realm() {
         # 只在可执行文件目录搜索符号链接
         for dir in "${exec_dirs[@]}"; do
             if [ -d "$dir" ]; then
-                find "$dir" -name "pf" -type l 2>/dev/null | while read -r link; do
+                find "$dir" -name "re" -type l 2>/dev/null | while read -r link; do
                     target=$(readlink "$link" 2>/dev/null)
                     if [[ "$target" == *"onRE"* ]]; then
                         rm -f "$link" && echo -e "${GREEN}✓${NC} 已删除符号链接: $link"
@@ -5555,7 +5555,7 @@ uninstall_realm() {
         echo -e "${GREEN}🗑️  完全卸载完成！${NC}"
         echo -e "${BLUE}所有 Realm 和 onRE 相关文件已从系统中完全移除${NC}"
     else
-        echo -e "${BLUE}脚本文件保留，可继续使用 pf 命令管理其他 Realm 服务${NC}"
+        echo -e "${BLUE}脚本文件保留，可继续使用 re 命令管理其他 Realm 服务${NC}"
     fi
     echo ""
 }
@@ -6239,7 +6239,7 @@ show_menu() {
         clear
         echo -e "${GREEN}=== Realmone全功能一键脚本 v1.0.0 ===${NC}"
         echo -e "${GREEN}项目开源:https://github.com/hillvision/realmone${NC}"
-        echo -e "${GREEN}原生realm的全部功能+故障转移 | 快捷命令: pf${NC}"
+        echo -e "${GREEN}原生realm的全部功能+故障转移 | 快捷命令: re${NC}"
 
         # 显示当前状态
         show_brief_status
@@ -6594,7 +6594,7 @@ find_main_script() {
 
     # 第二阶段：常见位置直接检查
     local common_paths=(
-        "/usr/local/bin/pf"
+        "/usr/local/bin/re"
         "/usr/local/bin/onRE.sh"
         "/root/onRE.sh"
         "/opt/onRE.sh"
@@ -6916,7 +6916,7 @@ if [ "$config_changed" = true ]; then
     # 第二阶段：常见位置直接检查
     if [ -z "$script_path" ]; then
         common_paths=(
-            "/usr/local/bin/pf"
+            "/usr/local/bin/re"
             "/usr/local/bin/onRE.sh"
             "/root/onRE.sh"
             "/opt/onRE.sh"
